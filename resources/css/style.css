@@ -1,0 +1,11 @@
+.col-md-12.column.login-box{
+	width: 500px;
+	margin: 100px auto;
+}
+.row.clearfix.main-box{
+	background: #f0f0f0;
+	height: 400px;
+}
+.container{
+	width: 100%;
+}
