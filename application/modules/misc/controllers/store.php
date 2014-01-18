@@ -12,17 +12,25 @@ class Store extends BaseController
 	public function index(){
 		
 	}
+	//this function used to add and edit store data
 	public function addStore(){
-		$this->input_require('editor');//there are three type 1.user 2.saler 3.storeHost
-		$this->input_require('storeName');
-		$this->input_require('address');
-		$this->input_require(array('or'=>array('tel1','tel2','tel3')));
-
-		$editor = $this->input->post('editor');
+		
+		//if id ,then edit the data
+		$id = $this->input->post('id');
+		if( !id){
+			// $this->input_require('editor');//there are three type 1.user 2.saler 3.storeHost
+			$this->input_require('editByUid');
+			$this->input_require('storeName');
+			$this->input_require('address');
+			$this->input_require(array('or'=>array('tel1','tel2','tel3')));
+		}
+		
+		// $editor = $this->input->post('editor');
+		$editByUid = $this->input->post('editByUid');
 		$storeName = $this->input->post('storeName');
 		$address = $this->input->post('address');
 
-		$mainItem = $this->input->post('mainItem');		
+		$mainItem = $this->input->post('mainItem');	
 		$lon = $this->input->post('lon');
 		$lat = $this->input->post('lat');
 		$tel1 = $this->input->post('tel1');
@@ -39,7 +47,8 @@ class Store extends BaseController
 		$createTime = date('Y-m-d H:i:s');
 		$status = 'pending';
 		$array = array(
-				'editor'		=> $editor,
+				// 'editor'		=> $editor,
+				'editByUid'		=> $editByUid,
 				'storeName'		=> $storeName,
 				'address'		=> $address,
 				'createTime'	=> $createTime
@@ -89,7 +98,16 @@ class Store extends BaseController
 		if( $status != false){
 			$array['status'] = $status;
 		}
-		$result = $this->store_model->upsert('store',$array);
+
+
+		if( !$id){
+			//add a new data
+			$result = $this->store_model->upsert('store',$array);
+		}else{
+			//edit the old data
+			$result = $this->stroe_model->updataWhere('store',$array,array('id'=>$id));
+		}
+		
 		if( $result ){
 			$this->jsonResponse(array('message'=>'success','result'=>$result));
 		}else{
