@@ -68,4 +68,30 @@ class Userdo extends BaseController
 		}
 
 	}
+
+	public function userLogin(){
+		$this->input_require( array( 'or' => array('userName','email')));
+		$this->input_require('password');
+
+		$userName = $this->input->post('userName');
+		$email = $this->input->post('email');
+		$password = $this->input->post('password');
+		$array = array(
+			'password' = md5($password)
+			);
+		if( $email){
+			$array['email'] = $email;
+		}
+		if( $userName){
+			$array['userName'] = $userName;
+		}
+		$result = $this->list_model->search('user',$array,null,1);
+		if ( !empty( $result)) {
+			$this->jsonResponse( array('message'=>'success'));
+		}else{
+			$this->jsonResponse( array('message'=>'error'),400);
+		}
+
+
+	}
 }

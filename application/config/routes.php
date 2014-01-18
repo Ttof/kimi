@@ -54,6 +54,7 @@ $route['editStoreInfo'] = "misc/store/addStore";
 //user
 $route['createUser'] = "misc/store/createUserInfo";
 $route['editUserInfo'] = "misc/store/createUserInfo";
+$route['login'] = "misc/userdo/userLogin";
 
 
 //userdo
