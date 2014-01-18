@@ -40,6 +40,7 @@ class Store extends BaseController
 		$id = $this->input->post('id');
 		$this->store_model->updateWhere('store',array('status'=>'deny'),array('id'=> $id));	
 		echo 1;
+		
 	}
 
 
