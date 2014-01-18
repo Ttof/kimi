@@ -116,5 +116,41 @@ class Store extends BaseController
 
 	}
 
+	public function createUserInfo(){
+		$id = $this->input->post('id');
+		if( !$id){
+			$this->input_require('userName');
+			$this->input_require('password');
+			$this->input_require('email');
+		}
+		
+
+		$userName = $this->input->post('userName');
+		$tel = $this->input->post('tel');
+		$carModel = $this->input->post('carModel');
+		$password = $this->input->post('password');
+		$email = $this->input->post('email');
+		$createTime = data('Y-m-d H:i:s', time());
+
+		$array = array(
+				'userName' 	=> $userName,
+				'tel'		=> $tel,
+				'email'		=> $email,
+				'password'	=> md5( $password),
+				'createTime'=> $createTime,
+			);
+		if( $carModel ){
+			$array['carModel'] = $carModel;
+		}
+
+		$result = $this->store_model->createUserInfo( $array);
+
+		if( $result){
+			$this->jsonResponse( array('message'=>'success','result'=>$result));
+		}else{
+			$this->jsonResponse( array('message'=>'error'),400);
+		}
+	}
+
 
 }
