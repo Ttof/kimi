@@ -105,7 +105,7 @@ class Store extends BaseController
 			$result = $this->store_model->upsert('store',$array);
 		}else{
 			//edit the old data
-			$result = $this->stroe_model->updataWhere('store',$array,array('id'=>$id));
+			$result = $this->stroe_model->updataWhere('store',$array,array('id'=>$id,'editByUid'=>$editByUid));
 		}
 		
 		if( $result ){
