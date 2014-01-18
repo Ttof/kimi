@@ -49,6 +49,11 @@ $route['getStroeInfoByStoreId'] = "misc/listinfo/stroeInfoByStoreId";
 
 //store
 $route['addStore'] = "misc/store/addStore";
+$route['editStoreInfo'] = "misc/store/addStore";
+
+//user
+$route['createUser'] = "misc/store/createUserInfo";
+$route['editUserInfo'] = "misc/store/createUserInfo";
 
 
 //userdo

@@ -19,9 +19,7 @@ class Store_model extends BaseModel {
 			//to edit the user where the id 
 			$result = $this->updataWhere('user',$data,array('id'=> $id));
 		}
-
 		return $result;
-		
 	}
 
 	

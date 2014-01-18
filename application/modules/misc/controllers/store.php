@@ -131,6 +131,7 @@ class Store extends BaseController
 		$password = $this->input->post('password');
 		$email = $this->input->post('email');
 		$createTime = data('Y-m-d H:i:s', time());
+		$type = $this->input->post('type'); 					//1.admin 2.saler 3.user
 
 		$array = array(
 				'userName' 	=> $userName,
@@ -141,6 +142,12 @@ class Store extends BaseController
 			);
 		if( $carModel ){
 			$array['carModel'] = $carModel;
+		}
+		if( !$type){
+			$type = 'user';
+			$array['type'] = $type;
+		}else{
+			$array['type'] = $type;
 		}
 
 		$result = $this->store_model->createUserInfo( $array);
