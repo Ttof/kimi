@@ -13,8 +13,8 @@ class Store extends BaseController
 		
 	}
 	public function storeList(){
-		// if ( !$this->session->userdata('is_admin')) 
-		// 	redirect('login');
+		if ( !$this->session->userdata('is_admin')) 
+			redirect('login');
 		$array = array('id <> '=> '');
 		 $selectVal = $this->input->get('selectVal');
 		if( $selectVal !== false){
