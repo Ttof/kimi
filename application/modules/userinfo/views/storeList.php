@@ -114,6 +114,7 @@
 		</div>
 	</div>
 </div>
+<?php echo $pagination['html']; ?>
 <?php echo $this->load->view('footer'); ?>
 <script type="text/javascript">
 function pass( id){
@@ -137,9 +138,11 @@ function deny( id){
 $(document).ready(function(){
 	$("#viewstatus").change(function(){
 		var value = $("#viewstatus").val();
+
 		$.get(' <?php echo base_url('userinfo/store/storeList') ?>',{'selectVal':value},function( data){
 
 			$('body').html(data);
+			$("#viewstatus").val('value');
 		});
 	});
 });

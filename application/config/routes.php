@@ -45,20 +45,36 @@ $route['getSubMenuNameByMainId'] = "misc/listinfo/getSubMenuNameByMainId";
 $route['getMenuListBySubId'] = "misc/listinfo/getMenuListBySubId"; 
 $route['getStoreMarkByStoreId'] = "misc/listinfo/getStoreMarkByStoreId";
 $route['getStroeInfoByStoreId'] = "misc/listinfo/stroeInfoByStoreId";
+$route['addUserLog'] = "misc/listinfo/addUserLog";
+$route['editUserLog'] = "misc/listinfo/addUserLog";
 
 
 //store
 $route['addStore'] = "misc/store/addStore";
 $route['editStoreInfo'] = "misc/store/addStore";
+$route['getStoreList'] = "misc/listinfo/getStoreList";
 
 //user
 $route['createUser'] = "misc/store/createUserInfo";
 $route['editUserInfo'] = "misc/store/createUserInfo";
-$route['login'] = "misc/userdo/userLogin";
+$route['userLogin'] = "misc/userdo/userLogin";
 
 
 //userdo
 $route['doComments'] = "misc/userdo/doComments";
+$route['addUserLog'] = "misc/userdo/addUserLog";
+$route['editUserLog'] = "misc/userdo/addUserLog";
+$route['getUserLog'] = "misc/listinfo/getUserLogByUserId";
+
+//recommend
+$route['recommends'] = "misc/userdo/recommends";
+$route['getRecommend'] = "misc/listinfo/getRecommendsList";
+
+//comments
+$route['getComments'] = "misc/listinfo/getCommentsList";
+
+//collect 
+$route['getCollect'] = "misc/listinfo/getCollectList";
 
 //load admin
 $route['login'] = "userinfo/userinfo/login";

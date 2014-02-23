@@ -8,19 +8,26 @@ class Store_model extends BaseModel {
 		$this->load->helper ( 'date' );
 	}
 
-	public function createUserInfo( $data){
+// 	public function createUserInfo( $data){
 		
-		if ( !$data['id']) {
-			//to add a new data to user
-			$result = $this->upsert('user',$data);
-		}elseif( $data['id']){
-			$id = $data['id'];
-			unset( $data['id']);
-			//to edit the user where the id 
-			$result = $this->updataWhere('user',$data,array('id'=> $id));
-		}
-		return $result;
-	}
+// 		if (  !isset($data['id'])) {
+// 			//this user is exist or not
+// 			$result = $this->search('user', array('email'=> $data['email']),null,1);
+// 			if( !empty( $result)){
+// 				return $this->jsonResponse( array('message'=>'error','result'=>'this user already exist,please log in directly '),400);
+// 			}
+			
+// 			//to add a new data to user
+// 			$result = $this->upsert('user',$data);
+// 		}elseif( $data['id']){
+// 			$id = $data['id'];
+// 			unset( $data['id']);
+// 			//to edit the user where the id 
+// 			$this->updateWhere('user',$data,array('id'=> $id));
+// 			return $this->jsonResponse( array('message'=>'success'));
+// 		}
+// 		return $result;
+// 	}
 
 	
 

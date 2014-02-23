@@ -19,7 +19,7 @@ class Userdo extends BaseController
 		$this->input_require('serverScore');
 		$this->input_require('deviceScore');
 		$this->input_require('comments');
-		$this>input_require('userId');
+		$this->input_require('userId');
 
 		$storeId = $this->input->post('storeId');
 		$tecScore =$this->input->post('tecScore');
@@ -77,7 +77,7 @@ class Userdo extends BaseController
 		$email = $this->input->post('email');
 		$password = $this->input->post('password');
 		$array = array(
-			'password' = md5($password)
+			'password' => md5($password)
 			);
 		if( $email){
 			$array['email'] = $email;
@@ -92,6 +92,101 @@ class Userdo extends BaseController
 			$this->jsonResponse( array('message'=>'error'),400);
 		}
 
+	}
+	public function recommends(){
+		$this->input_require('userId');
+		$this->input_require('storeName');
+		$this->input_require('address');
+		$this->input_require('tel');
+		// $this->input_require('tecScore');
+		// $this->input_require('partScore');
+		// $this->input_require('serverScore');
+		// $this->input_require('faScore');
+
+		$userId = $this->input->post('userId');
+		$storeName = $this->input->post('storeName');
+		$address = $this->input->post('address');
+		$tel = $this->input->post('tel');
+		$tecScore = $this->input->post('tecScore');
+		$partScore = $this->input->post('partScore');
+		$serverScore = $this->input->post('serverScore');
+		$faScore = $this->input->post('faScore');
+		$reason = $this->input->post('reason');
+
+		$array = array(
+				'userId' 		=> $userId,
+				'storeName'		=> $storeName,
+				'address'		=> $address,
+				'tel'			=> $tel,
+				'tecScore'		=> $tecScore,
+				'partScore'		=> $partScore,
+				'serverScore'	=> $serverScore,
+				'faScore'		=> $faScore
+				);
+		if( isset( $reason)){
+			$array['reason'] = $reason;
+		}
+		$recommendsId = $this->list_model->upsert('recommends',$array);
+		if( isset( $recommendsId)){
+			$this->jsonResponse( array('message' => 'success','result'=>$recommendsId));
+		}else{
+			$this->jsonResponse( array('message'=>'error'),400);
+		}
+
+
+	}
+	public function addUserLog(){
+		$id = $this->input->post('id');
+		if( !isset( $id)){
+			$this->input_require('date');
+			$this->input_require('storeName');
+			$this->input_require('projectName');
+			$this->input_require('subProName');
+			$this->input_require('userId');
+		}
+		
+
+		$createTime = $this->input->post('date');
+		$storeName = $this->input->post('storeName');
+		$projectName = $this->input->post('projectName');
+		$subProName = $this->input->post('subProName');
+		$userId = $this->input->post('userId');
+		$miles = $this->input->post('miles');
+		$fee = $this->input->post('fee');
+		$note = $this->input->post('note');
+
+		$array = array(
+				'createTime'		=> $createTime,
+				'storeName'			=> $storeName,
+				'projectName'		=> $projectName,
+				'subProName'		=> $subProName,
+				'userId'			=> $userId
+			);
+		if( isset( $miles)){
+			$array['miles'] = $miles;
+		}
+		if( isset( $fee)){
+			$array['fee'] = $fee;
+		}
+		if( isset( $note)){
+			$array['notes'] = $note;
+		}
+		if( !$id){
+			$userLogId = $this->list_model->upsert('user_log',$array);
+		}else{
+			foreach ( $array as $key=>$val){
+				if( $val == null){
+					unset( $array[$key]);
+				}
+			}
+			$this->list_model->updateWhere('user_log',$array,array('id'=>$id));
+			return $this->jsonResponse( array('message'=>'success'));
+		}
+		if( isset( $userLogId)){
+			$this->jsonResponse( array('message'=>'success','result'=>$userLogId));
+		}else{
+			$this->jsonResponse( array('message'=>'error'),400);
+		}
 
 	}
 }

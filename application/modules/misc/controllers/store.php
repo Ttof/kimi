@@ -17,14 +17,13 @@ class Store extends BaseController
 		
 		//if id ,then edit the data
 		$id = $this->input->post('id');
-		if( !id){
+		if( !$id){
 			// $this->input_require('editor');//there are three type 1.user 2.saler 3.storeHost
-			$this->input_require('editByUid');
 			$this->input_require('storeName');
 			$this->input_require('address');
 			$this->input_require(array('or'=>array('tel1','tel2','tel3')));
 		}
-		
+		$this->input_require('editByUid');
 		// $editor = $this->input->post('editor');
 		$editByUid = $this->input->post('editByUid');
 		$storeName = $this->input->post('storeName');
@@ -44,7 +43,7 @@ class Store extends BaseController
 		$selfImg = $this->input->post('selfImg');
 		$selfContents = $this->input->post('selfContents');
 		$openTime = $this->input->post('openTime');
-		$createTime = date('Y-m-d H:i:s');
+		$createTime = date('Y-m-d H:i:s',time());
 		$status = 'pending';
 		$array = array(
 				// 'editor'		=> $editor,
@@ -105,7 +104,17 @@ class Store extends BaseController
 			$result = $this->store_model->upsert('store',$array);
 		}else{
 			//edit the old data
-			$result = $this->stroe_model->updataWhere('store',$array,array('id'=>$id,'editByUid'=>$editByUid));
+			$userStore = $this->store_model->search('store',array('id'=>$id,'editByUid'=>$editByUid),null,1);
+			if( empty( $userStore)){
+				return $this->jsonResponse( array('message'=>'error','result'=>'this user can not edit this store'),400);
+			}
+			foreach ( $array as $key => $val){
+				if( $val == null){
+					unset( $array[$key]);
+				}
+			}
+			$this->store_model->updateWhere('store',$array,array('id'=>$id,'editByUid'=>$editByUid));
+			return $this->jsonResponse( array('message'=>'success'));
 		}
 		
 		if( $result ){
@@ -124,13 +133,12 @@ class Store extends BaseController
 			$this->input_require('email');
 		}
 		
-
 		$userName = $this->input->post('userName');
 		$tel = $this->input->post('tel');
 		$carModel = $this->input->post('carModel');
 		$password = $this->input->post('password');
 		$email = $this->input->post('email');
-		$createTime = data('Y-m-d H:i:s', time());
+		$createTime = date('Y-m-d H:i:s',time());
 		$type = $this->input->post('type'); 					//1.admin 2.saler 3.user
 
 		$array = array(
@@ -150,7 +158,27 @@ class Store extends BaseController
 			$array['type'] = $type;
 		}
 
-		$result = $this->store_model->createUserInfo( $array);
+		if (  !$id) {
+			//this user is exist or not
+			$result = $this->store_model->search('user', array('email'=> $array['email']),null,1);
+			if( !empty( $result)){
+				return $this->jsonResponse( array('message'=>'error','result'=>'this user already exist,please log in directly'),400);
+			}
+				
+			//to add a new data to user
+			$result = $this->store_model->upsert('user',$array);
+		}elseif( $id){
+			unset( $array['email']);
+			foreach ( $array as $key=>$val){
+				if( $val == null){
+					unset( $array[$key]);
+				}
+			}
+			//to edit the user where the id 
+			 $this->store_model->updateWhere('user',$array,array('id'=> $id));
+			return $this->jsonResponse( array('message'=>'success'));
+		}
+		
 
 		if( $result){
 			$this->jsonResponse( array('message'=>'success','result'=>$result));

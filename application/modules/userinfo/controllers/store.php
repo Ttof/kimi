@@ -7,6 +7,7 @@ class Store extends BaseController
 	{
 		parent::__construct();
 		$this->load->model('store_model');
+		$this->load->helper('pagination');
 	}
 
 	public function index(){
@@ -25,8 +26,28 @@ class Store extends BaseController
 				$array = array( 'status'=>'pending');
 			}
 		}
+// 		var_dump( $_GET);
 		
 		$storeInfo = $this->store_model->search('store',$array,null);
+
+		// Set pagination 还未分页
+		$data['limit'] = $this->input->get('per_page') ? $this->input->get('per_page') : 10;
+		$data['page'] = $this->input->get('page') ? $this->input->get('page') : 1;
+
+		$total = count( $storeInfo);
+		if ($total==0)
+		{
+			$data['total'] = 0;
+		}
+		else 
+		{
+			$data['total'] = $total;
+// 			var_dump( uri_string());
+			$data['pagination'] = pagination($total, $data['page'], $data['limit'], uri_string());
+			// $data['result'] = $this->student_model->find_all($term,$class,$data['limit'],$data['pagination']['offset']);
+			// var_dump( $data);
+			
+		}
 
 		$data['storeInfo'] = $storeInfo;
 		$this->load->view('storeList',$data);
@@ -40,7 +61,6 @@ class Store extends BaseController
 		$id = $this->input->post('id');
 		$this->store_model->updateWhere('store',array('status'=>'deny'),array('id'=> $id));	
 		echo 1;
-		
 	}
 
 
