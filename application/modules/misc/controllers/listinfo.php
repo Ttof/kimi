@@ -186,7 +186,7 @@ class Listinfo extends BaseController
 		$totalPartScore = '';
 		$totalServerScore = '';
 		$totalDeviceScore = '';
-		$result = $this->list_model->search('comments',array('storeId'=>$storeId),'DESC');
+		$result = $this->list_model->search('comments',array('storeId'=>$storeId));
 		
 		
 		if( !empty( $result)){
